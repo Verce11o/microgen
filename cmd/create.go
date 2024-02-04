@@ -1,5 +1,4 @@
-The MIT License (MIT)
-
+/*
 Copyright © 2024 Vercello
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,3 +18,38 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+*/
+package cmd
+
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+	"os"
+)
+
+var (
+	folder    string
+	createCmd = &cobra.Command{
+		Use:   "create",
+		Short: "creates main project structure",
+		Long:  `Create main project structure.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if _, err := os.Stat(folder); os.IsNotExist(err) {
+				return fmt.Errorf("invalid folder path: %s", folder)
+			}
+			return nil
+		},
+	}
+)
+
+func init() {
+	rootCmd.AddCommand(createCmd)
+
+	currentFolder, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+
+	createCmd.Flags().StringVarP(&folder, "folder", "f", currentFolder, "folder to generate microservice")
+
+}

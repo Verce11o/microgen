@@ -1,5 +1,4 @@
-The MIT License (MIT)
-
+/*
 Copyright © 2024 Vercello
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,3 +18,37 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+*/
+package cmd
+
+import (
+	"os"
+
+	"github.com/spf13/cobra"
+)
+
+var (
+	cfgFile     string
+	userLicense string
+	rootCmd     = &cobra.Command{
+		Use:   "microgen",
+		Short: "Microgen is a CLI tool for generating microservice boilerplate in clean architecture.",
+		Long:  `DEV Version.`,
+		// Uncomment the following line if your bare application
+		// has an action associated with it:
+		// Run: func(cmd *cobra.Command, args []string) { },
+	}
+)
+
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
+func Execute() {
+	err := rootCmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
+}
+
+func init() {
+
+}
