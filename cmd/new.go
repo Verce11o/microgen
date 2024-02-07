@@ -98,7 +98,7 @@ var newCmd = &cobra.Command{
 		}
 
 		fmt.Fprintf(&sb,
-			"🚀 Project name: %s\n\n✨ Framework: %s\n\n⚡ Additions: %s",
+			"🚀 Project name: %s\n\n✨ Framework: %s\n\n⚡ Additions: %s\n\nMade by Vercello with 🩵",
 			lipgloss.NewStyle().Bold(true).Render(projectName),
 			keyword(strings.ToUpper(framework)),
 			keyword(additionsDisplay),
