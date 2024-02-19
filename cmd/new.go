@@ -36,19 +36,19 @@ var newCmd = &cobra.Command{
 	Short: "Generates a boilerplate application structure",
 	Long:  `This command generates a boilerplate application structure in new folder.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var projectName string
+		var moduleName string
 		var framework string
 		var additions []string
 
 		form := huh.NewForm(
 			huh.NewGroup(
 				huh.NewInput().
-					Value(&projectName).
-					Title("✨ Your project name").
-					Placeholder("👤Auth Microservice").
+					Value(&moduleName).
+					Title("✨ Module name").
+					Placeholder("👤github.com/john/myproject").
 					Validate(func(s string) error {
 						if len(s) < 2 {
-							return errors.New("project name too short")
+							return errors.New("module name too short")
 						}
 						return nil
 					}),
@@ -98,8 +98,8 @@ var newCmd = &cobra.Command{
 		}
 
 		fmt.Fprintf(&sb,
-			"🚀 Project name: %s\n\n✨ Framework: %s\n\n⚡ Additions: %s\n\nMade by Vercello with 🩵",
-			lipgloss.NewStyle().Bold(true).Render(projectName),
+			"🚀 Module name: %s\n\n✨ Framework: %s\n\n⚡ Additions: %s\n\nMade by Vercello with <3",
+			lipgloss.NewStyle().Bold(true).Render(moduleName),
 			keyword(strings.ToUpper(framework)),
 			keyword(additionsDisplay),
 		)
