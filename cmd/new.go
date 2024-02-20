@@ -24,6 +24,8 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	microgen "github.com/Verce11o/microgen/internal/cmd"
+	config "github.com/Verce11o/microgen/internal/config"
 	"github.com/charmbracelet/huh"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
@@ -37,6 +39,7 @@ var newCmd = &cobra.Command{
 	Long:  `This command generates a boilerplate application structure in new folder.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var moduleName string
+		var projectName string
 		var framework string
 		var additions []string
 
@@ -49,6 +52,19 @@ var newCmd = &cobra.Command{
 					Validate(func(s string) error {
 						if len(s) < 2 {
 							return errors.New("module name too short")
+						}
+						return nil
+					}),
+			),
+			huh.NewGroup(
+				huh.NewInput().
+					Value(&projectName).
+					Title("📝 Project name").
+					Description("This name will be used to create the project folder").
+					Placeholder("📦cool-project").
+					Validate(func(s string) error {
+						if len(s) < 2 {
+							return errors.New("project name too short")
 						}
 						return nil
 					}),
@@ -113,7 +129,8 @@ var newCmd = &cobra.Command{
 				Margin(1, 2).
 				Render(sb.String()),
 		)
-
+		config := config.NewConfig(config.App{Module: moduleName, Name: projectName})
+		microgen.InitApp(config)
 	},
 }
 

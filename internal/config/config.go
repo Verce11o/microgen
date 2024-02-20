@@ -6,6 +6,7 @@ type Config struct {
 
 type App struct {
 	Module string
+	Name   string
 }
 
 func NewConfig(app App) *Config {

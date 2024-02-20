@@ -21,8 +21,13 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/Verce11o/microgen/cmd"
+import (
+	microgen "github.com/Verce11o/microgen/internal/cmd"
+	"github.com/Verce11o/microgen/internal/config"
+)
 
 func main() {
-	cmd.Execute()
+	//cmd.Execute()
+	config := config.NewConfig(config.App{Module: "github.com/Verce11o/test-microgen"})
+	microgen.InitApp(config)
 }
