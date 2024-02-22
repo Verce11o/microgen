@@ -24,10 +24,14 @@ package main
 import (
 	microgen "github.com/Verce11o/microgen/internal/cmd"
 	"github.com/Verce11o/microgen/internal/config"
+	"log/slog"
 )
 
 func main() {
 	//cmd.Execute()
-	config := config.NewConfig(config.App{Module: "github.com/Verce11o/test-microgen"})
-	microgen.InitApp(config)
+	config := config.NewConfig(config.App{Module: "github.com/Verce11o/test-gen"}, "newfolder")
+	err := microgen.InitApp(config)
+	if err != nil {
+		slog.Error(err.Error())
+	}
 }

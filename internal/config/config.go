@@ -1,14 +1,14 @@
 package config
 
 type Config struct {
-	App App
+	App    App
+	Folder string
 }
 
 type App struct {
 	Module string
-	Name   string
 }
 
-func NewConfig(app App) *Config {
-	return &Config{App: app}
+func NewConfig(app App, folder string) *Config {
+	return &Config{App: app, Folder: folder}
 }

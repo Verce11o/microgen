@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"github.com/Verce11o/microgen/generator"
 	"github.com/Verce11o/microgen/internal/config"
+	"github.com/Verce11o/microgen/internal/generator"
 )
 
-func InitApp(config *config.Config) {
-	g := generator.NewGenerator(config)
-	g.Generate()
+func InitApp(config *config.Config) error {
+	g := generator.NewGenerator(config, generator.NewSkeleton())
+	err := g.GenerateFS()
+	return err
 }
