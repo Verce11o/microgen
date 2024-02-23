@@ -22,14 +22,24 @@ func (g *Generator) GenerateFS() error {
 		if savePath == "" {
 			return nil
 		}
-		fmt.Println(savePath)
+		fullPath := g.config.Folder + savePath
 
 		if d.IsDir() {
-			err := os.MkdirAll(g.config.Folder+savePath, os.FileMode(0750))
+			err := os.MkdirAll(fullPath, os.FileMode(0750))
 			if err != nil {
 				return fmt.Errorf("cannot create folder %s: %w", savePath, err)
 			}
 			return nil
+		}
+
+		content, err := g.skeleton.template.ReadFile(path)
+		if err != nil {
+			return err
+		}
+
+		err = os.WriteFile(fullPath, content, os.FileMode(0775))
+		if err != nil {
+			return err
 		}
 
 		return nil
