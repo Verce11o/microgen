@@ -129,7 +129,7 @@ var newCmd = &cobra.Command{
 				Margin(1, 2).
 				Render(sb.String()),
 		)
-		config := config.NewConfig(config.App{Module: moduleName, Name: folderName}, folderName)
+		config := config.NewConfig(config.App{Module: moduleName}, folderName)
 		microgen.InitApp(config)
 	},
 }
