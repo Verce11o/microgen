@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Verce11o/test-gen/internal/app"
+	"github.com/Verce11o/example/internal/app"
 )
 
 func main() {

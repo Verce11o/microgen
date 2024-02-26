@@ -29,7 +29,7 @@ import (
 
 func main() {
 	//cmd.Execute()
-	config := config.NewConfig(config.App{Module: "github.com/Verce11o/test-gen"}, "newfolder")
+	config := config.NewConfig(config.App{Module: "github.com/Verce11o/example"}, "example")
 	err := microgen.InitApp(config)
 	if err != nil {
 		slog.Error(err.Error())
