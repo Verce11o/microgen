@@ -1,1 +1,34 @@
 package app
+
+import (
+    "context"
+    "fmt"
+    "{{ .App.Module }}/internal/config"
+	"go.uber.org/zap"
+	"google.golang.org/grpc"
+
+)
+
+type App struct {
+    cfg *config.Config
+    log *zap.SugaredLogger
+    grpcServer *grpc.Server
+}
+
+func New(ctx context.Context, cfg *config.Config, log *zap.SugaredLogger) *App {
+
+	repo := repository.NewRepository(db, cfg)
+
+	services := service.NewService(log, repo)
+
+	server := grpc.NewServer()
+
+	{{ .ServiceName }}.Register(log, services, server, trace.Tracer)
+
+
+	return &App{
+		cfg:        cfg,
+		log:        log,
+		grpcServer: server,
+	}
+}

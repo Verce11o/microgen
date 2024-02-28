@@ -31,7 +31,7 @@ func (g *Generator) generateFS() (fs.FS, error) {
 		if savePath == "" {
 			return nil
 		}
-		fullPath := g.config.Folder + savePath
+		fullPath := g.config.ServiceName + savePath
 
 		if d.IsDir() {
 			err := os.MkdirAll(fullPath, os.FileMode(0750))
@@ -54,7 +54,7 @@ func (g *Generator) generateFS() (fs.FS, error) {
 		return nil
 	})
 
-	genFS := os.DirFS(g.config.Folder)
+	genFS := os.DirFS(g.config.ServiceName)
 
 	return genFS, err
 }

@@ -39,7 +39,7 @@ var newCmd = &cobra.Command{
 	Long:  `This command generates a boilerplate application structure in new folder.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var moduleName string
-		var folderName string
+		var serviceName string
 		var framework string
 		var additions []string
 
@@ -58,7 +58,7 @@ var newCmd = &cobra.Command{
 			),
 			huh.NewGroup(
 				huh.NewInput().
-					Value(&folderName).
+					Value(&serviceName).
 					Title("📝 Project name").
 					Description("This name will be used to create the project folder").
 					Placeholder("📦cool-project").
@@ -129,7 +129,7 @@ var newCmd = &cobra.Command{
 				Margin(1, 2).
 				Render(sb.String()),
 		)
-		config := config.NewConfig(config.App{Module: moduleName}, folderName)
+		config := config.NewConfig(config.App{Module: moduleName}, serviceName)
 		microgen.InitApp(config)
 	},
 }
