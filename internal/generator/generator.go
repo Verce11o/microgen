@@ -31,6 +31,14 @@ func (g *Generator) generateFS() (fs.FS, error) {
 		if savePath == "" {
 			return nil
 		}
+
+		if _, err := os.Stat(g.config.ServiceName); os.IsNotExist(err) {
+			err = os.Mkdir(g.config.ServiceName, os.FileMode(0750))
+			if err != nil {
+				return fmt.Errorf("cannot create root folder %s: %w", savePath, err)
+			}
+		}
+
 		fullPath := g.config.ServiceName + savePath
 
 		if d.IsDir() {
@@ -67,6 +75,7 @@ func (g *Generator) Generate() error {
 
 	for _, st := range g.Steps {
 		if err = st.Invoke(genFS, g.config); err != nil {
+			fmt.Println(err.Error())
 			return err
 		}
 	}

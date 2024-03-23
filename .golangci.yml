@@ -22,8 +22,8 @@ linters:
     - predeclared
     - reassign
 
+
 linters-settings:
   staticcheck:
     checks:
-    - all
     - '-SA1024'

@@ -2,6 +2,8 @@ package internal
 
 import (
     "context"
+	pb "{{.App.Module}}/protos/gen/go/{{ToPrivateName (.ServiceName)}}"
+
 )
 
 {{ $ServiceName := ToPublicName (.ServiceName) }}

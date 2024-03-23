@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	pb "github.com/Verce11o/example/protos/gen/go/example"
 )
 
 type Repository interface {

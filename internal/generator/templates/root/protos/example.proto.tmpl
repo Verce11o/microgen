@@ -1,0 +1,24 @@
+syntax = "proto3";
+{{ $packageName := ToPrivateName (.ServiceName) }}
+package {{$packageName}};
+
+option go_package = "{{.App.Module}}/protos;{{$packageName}}";
+
+import "google/protobuf/timestamp.proto";
+{{ $modelName := ToPublicName (.ServiceName) }}
+service {{$modelName}}Service {
+  rpc Create{{$modelName}}(Create{{$modelName}}Request) returns (Create{{$modelName}}Response);
+  rpc Get{{$modelName}}(Get{{$modelName}}Request) returns (Get{{$modelName}}Response);
+  rpc Update{{$modelName}}(Update{{$modelName}}Request) returns (Update{{$modelName}}Response);
+  rpc Delete{{$modelName}}(Delete{{$modelName}}Request) returns (Delete{{$modelName}}Response);
+}
+
+message Create{{$modelName}}Request {}
+message Get{{$modelName}}Request {}
+message Update{{$modelName}}Request {}
+message Delete{{$modelName}}Request {}
+
+message Create{{$modelName}}Response {}
+message Get{{$modelName}}Response {}
+message Update{{$modelName}}Response {}
+message Delete{{$modelName}}Response {}

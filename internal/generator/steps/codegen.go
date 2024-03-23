@@ -54,7 +54,7 @@ func (c *CodeGen) Invoke(genFS fs.FS, config *config.Config) error {
 			return fmt.Errorf("cannot parse template: %w", err)
 		}
 
-		if strings.Contains(f.Name(), ".tmpl") {
+		if strings.Contains(f.Name(), "go.tmpl") {
 			generatedCode, err = format.Source(generatedCode)
 			if err != nil {
 				return fmt.Errorf("cannot format file: %w", err)
