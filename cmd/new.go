@@ -40,8 +40,8 @@ var newCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var moduleName string
 		var serviceName string
-		var framework string
 		var additions []string
+		var storages []string
 
 		form := huh.NewForm(
 			huh.NewGroup(
@@ -69,17 +69,17 @@ var newCmd = &cobra.Command{
 						return nil
 					}),
 			),
-			huh.NewGroup(
-				huh.NewSelect[string]().
-					Title("What framework would you 🩵 to use?").
-					Options(
-						huh.NewOption("🍸 Gin", "gin").Selected(true),
-						huh.NewOption("⚡️ Fiber", "fiber"),
-						huh.NewOption("💠 Echo", "echo"),
-						huh.NewOption("🧩 Chi", "chi"),
-					).
-					Value(&framework),
-			),
+			//huh.NewGroup(
+			//	huh.NewSelect[string]().
+			//		Title("What framework would you 🩵 to use?").
+			//		Options(
+			//			huh.NewOption("🍸 Gin", "gin").Selected(true),
+			//			huh.NewOption("⚡️ Fiber", "fiber"),
+			//			huh.NewOption("💠 Echo", "echo"),
+			//			huh.NewOption("🧩 Chi", "chi"),
+			//		).
+			//		Value(&framework),
+			//),
 
 			huh.NewGroup(
 				huh.NewMultiSelect[string]().
@@ -87,12 +87,21 @@ var newCmd = &cobra.Command{
 					Description("⚡️ Choose what to add into microservice").
 					Options(
 						huh.NewOption("🦫 Jaeger", "jaeger"),
+					).
+					Value(&additions).
+					Limit(1).
+					Filterable(true),
+			),
+			huh.NewGroup(
+				huh.NewMultiSelect[string]().
+					Title("Storage").
+					Description("📦 Choose your storage").
+					Options(
 						huh.NewOption("🐘 Postgres", "postgres"),
 						huh.NewOption("☘️  MongoDB", "mongo"),
 						huh.NewOption("📦 AWS (Minio)", "aws"),
 					).
-					Value(&additions).
-					Limit(4).
+					Value(&storages).
 					Filterable(true),
 			),
 		)
@@ -103,21 +112,18 @@ var newCmd = &cobra.Command{
 		}
 
 		var sb strings.Builder
-		keyword := func(s string) string {
-			return lipgloss.NewStyle().Foreground(lipgloss.Color("212")).Render(s)
-		}
-
-		additionsDisplay := "-"
-
-		if len(additions) > 1 {
-			additionsDisplay = strings.Join(additions, ", ")
+		keyword := func(s []string) string {
+			if len(s) > 1 {
+				return lipgloss.NewStyle().Foreground(lipgloss.Color("212")).Render(strings.Join(s, ", "))
+			}
+			return "-"
 		}
 
 		fmt.Fprintf(&sb,
-			"🚀 Module name: %s\n\n✨ Framework: %s\n\n⚡ Additions: %s\n\nMade by Vercello with <3",
+			"🚀 Module name: %s\n\n⚡ Additions: %s\n\n📦Storages: %s\n\nMade by Vercello with <3",
 			lipgloss.NewStyle().Bold(true).Render(moduleName),
-			keyword(strings.ToUpper(framework)),
-			keyword(additionsDisplay),
+			keyword(additions),
+			keyword(storages),
 		)
 
 		fmt.Println(
@@ -129,7 +135,13 @@ var newCmd = &cobra.Command{
 				Margin(1, 2).
 				Render(sb.String()),
 		)
-		config := config.NewConfig(config.App{Module: moduleName}, serviceName)
+
+		confStorages := make([]config.Storage, 0, len(storages))
+		for _, storage := range storages {
+			confStorages = append(confStorages, config.Storage(storage))
+		}
+
+		config := config.NewConfig(config.App{Module: moduleName, Storages: confStorages}, serviceName)
 		microgen.InitApp(config)
 	},
 }

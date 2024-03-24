@@ -1,0 +1,6 @@
+package models
+{{ $ServiceName := ToPublicName (.ServiceName) }}
+
+type {{$ServiceName}} struct {
+    ID int `json:"id"`
+}

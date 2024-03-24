@@ -9,10 +9,9 @@ import (
 func InitApp(config *config.Config) error {
 	g := generator.NewGenerator(config, generator.NewSkeleton())
 	g.AddStep(steps.NewCodeGen())
-	g.AddStep(steps.NewMakefile())
 	g.AddStep(steps.NewRenameTmpl())
-
 	g.AddStep(steps.NewProtoCompiler())
+	g.AddStep(steps.NewRepository())
 	err := g.Generate()
 	return err
 }

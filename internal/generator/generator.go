@@ -75,7 +75,6 @@ func (g *Generator) Generate() error {
 
 	for _, st := range g.Steps {
 		if err = st.Invoke(genFS, g.config); err != nil {
-			fmt.Println(err.Error())
 			return err
 		}
 	}

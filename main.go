@@ -25,11 +25,15 @@ import (
 	microgen "github.com/Verce11o/microgen/internal/cmd"
 	"github.com/Verce11o/microgen/internal/config"
 	"log/slog"
+	"os"
 )
 
 func main() {
 	//cmd.Execute()
-	config := config.NewConfig(config.App{Module: "github.com/Verce11o/example"}, "example")
+	os.RemoveAll("example")
+
+	storages := []config.Storage{"postgres", "mongodb"}
+	config := config.NewConfig(config.App{Module: "github.com/Verce11o/example", Storages: storages}, "example")
 	err := microgen.InitApp(config)
 	if err != nil {
 		slog.Error(err.Error())
