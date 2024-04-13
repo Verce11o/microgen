@@ -87,6 +87,7 @@ var newCmd = &cobra.Command{
 					Description("⚡️ Choose what to add into microservice").
 					Options(
 						huh.NewOption("🦫 Jaeger", "jaeger"),
+						huh.NewOption("📦 AWS (Minio)", "aws"),
 					).
 					Value(&additions).
 					Limit(1).
@@ -99,7 +100,6 @@ var newCmd = &cobra.Command{
 					Options(
 						huh.NewOption("🐘 Postgres", "postgres"),
 						huh.NewOption("☘️  MongoDB", "mongo"),
-						huh.NewOption("📦 AWS (Minio)", "aws"),
 					).
 					Value(&storages).
 					Filterable(true),

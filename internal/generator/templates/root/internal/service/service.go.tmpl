@@ -1,0 +1,63 @@
+package service
+
+import (
+	"context"
+	"{{.App.Module}}/internal/models"
+	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
+	"go.uber.org/zap"
+)
+
+{{ $ServiceName := ToPublicName (.ServiceName) }}
+
+type {{$ServiceName}}Repository interface {
+    Create{{$ServiceName}}(ctx context.Context, name string) (int, error)
+    Get{{$ServiceName}}(ctx context.Context, id int) (models.{{$ServiceName}}, error)
+    Update{{$ServiceName}}(ctx context.Context, id int, name string) (models.{{$ServiceName}}, error)
+    Delete{{$ServiceName}}(ctx context.Context, id int) (error)
+}
+
+type {{$ServiceName}}Service struct {
+	log    *zap.SugaredLogger
+	repo   {{$ServiceName}}Repository
+}
+
+func New{{$ServiceName}}Service(log *zap.SugaredLogger, repo {{$ServiceName}}Repository) *{{$ServiceName}}Service {
+	return &{{$ServiceName}}Service{log: log, repo: repo}
+}
+
+func (s *{{$ServiceName}}Service) Create{{$ServiceName}}(ctx context.Context, name string) (int, error) {
+	modelID, err := s.repo.Create{{$ServiceName}}(ctx, name)
+	if err != nil {
+		return 0, err
+	}
+
+	return modelID, nil
+}
+
+func (s *{{$ServiceName}}Service) Get{{$ServiceName}}(ctx context.Context, id int) (models.{{$ServiceName}}, error) {
+	model, err := s.repo.Get{{$ServiceName}}(ctx, id)
+	if err != nil {
+		return models.{{$ServiceName}}{}, err
+	}
+
+	return model, nil
+}
+
+func (s *{{$ServiceName}}Service) Update{{$ServiceName}}(ctx context.Context, id int, name string) (models.{{$ServiceName}}, error) {
+	model, err := s.repo.Update{{$ServiceName}}(ctx, id, name)
+	if err != nil {
+		return models.{{$ServiceName}}{}, err
+	}
+
+	return model, nil
+}
+
+func (s *{{$ServiceName}}Service) Delete{{$ServiceName}}(ctx context.Context, id int) (error) {
+	err := s.repo.Delete{{$ServiceName}}(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

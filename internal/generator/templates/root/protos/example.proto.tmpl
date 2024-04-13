@@ -13,12 +13,35 @@ service {{$modelName}}Service {
   rpc Delete{{$modelName}}(Delete{{$modelName}}Request) returns (Delete{{$modelName}}Response);
 }
 
-message Create{{$modelName}}Request {}
-message Get{{$modelName}}Request {}
-message Update{{$modelName}}Request {}
-message Delete{{$modelName}}Request {}
+message Create{{$modelName}}Request {
+    string name = 1;
+}
 
-message Create{{$modelName}}Response {}
-message Get{{$modelName}}Response {}
-message Update{{$modelName}}Response {}
+message Get{{$modelName}}Request {
+    int32 id = 1;
+}
+
+message Update{{$modelName}}Request {
+    int32 id = 1;
+    string name = 2;
+}
+
+message Delete{{$modelName}}Request {
+    int32 id = 1;
+}
+
+message Create{{$modelName}}Response {
+    int32 id = 1;
+}
+
+message Get{{$modelName}}Response {
+    int32 id = 1;
+    string name = 2;
+}
+
+message Update{{$modelName}}Response {
+    int32 id = 1;
+    string name = 2;
+}
+
 message Delete{{$modelName}}Response {}

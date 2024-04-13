@@ -2,5 +2,6 @@ package models
 {{ $ServiceName := ToPublicName (.ServiceName) }}
 
 type {{$ServiceName}} struct {
-    ID int `json:"id"`
+    ID int `json:"id,omitempty" db:"id"`
+    Name string `json:"string,omitempty" db:"name"`
 }

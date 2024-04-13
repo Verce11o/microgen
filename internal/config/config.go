@@ -6,11 +6,9 @@ type Config struct {
 }
 
 type App struct {
-	Module   string
-	Storages []Storage
+	Module  string
+	Storage string
 }
-
-type Storage string
 
 func NewConfig(app App, serviceName string) *Config {
 	return &Config{App: app, ServiceName: serviceName}

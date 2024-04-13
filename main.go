@@ -21,19 +21,20 @@ THE SOFTWARE.
 */
 package main
 
+import "os"
+
 import (
 	microgen "github.com/Verce11o/microgen/internal/cmd"
 	"github.com/Verce11o/microgen/internal/config"
 	"log/slog"
-	"os"
 )
 
+// TODO rename example proto
 func main() {
 	//cmd.Execute()
 	os.RemoveAll("example")
 
-	storages := []config.Storage{"postgres", "mongodb"}
-	config := config.NewConfig(config.App{Module: "github.com/Verce11o/example", Storages: storages}, "example")
+	config := config.NewConfig(config.App{Module: "github.com/Verce11o/example", Storage: "postgres"}, "example")
 	err := microgen.InitApp(config)
 	if err != nil {
 		slog.Error(err.Error())

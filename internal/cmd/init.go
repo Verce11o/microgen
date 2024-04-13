@@ -13,6 +13,7 @@ func InitApp(config *config.Config) error {
 	g.AddStep(steps.NewRenameTmpl())
 	g.AddStep(steps.NewProtoCompiler())
 	g.AddStep(steps.NewRepository())
+	g.AddStep(steps.NewGoModTidy())
 	err := g.Generate()
 	return err
 }

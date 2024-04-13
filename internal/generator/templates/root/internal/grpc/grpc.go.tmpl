@@ -1,0 +1,71 @@
+package grpc
+
+import (
+	"context"
+	pb "{{.App.Module}}/protos/gen/go"
+	"{{.App.Module}}/internal/models"
+	"go.uber.org/zap"
+    "google.golang.org/grpc"
+    "google.golang.org/grpc/status"
+)
+
+{{ $ServiceName := ToPublicName (.ServiceName) }}
+
+type {{$ServiceName}}Service interface {
+    Create{{$ServiceName}}(ctx context.Context, name string) (models.{{$ServiceName}}, error)
+    Get{{$ServiceName}}(ctx context.Context, id int) (models.{{$ServiceName}}, error)
+    Update{{$ServiceName}}(ctx context.Context, id int, name string) (models.{{$ServiceName}}, error)
+    Delete{{$ServiceName}}(ctx context.Context, id int) (error)
+}
+
+type Server struct {
+	log     *zap.SugaredLogger
+	service {{$ServiceName}}Service
+	pb.Unimplemented{{$ServiceName}}ServiceServer
+}
+
+func Register(log *zap.SugaredLogger, service ViewService, server *grpc.Server) {
+	pb.Register{{$ServiceName}}ServiceServer(server, &Server{log: log, service: service})
+}
+
+func (s *Server) Create{{$ServiceName}}(ctx context.Context, request *pb.Create{{$ServiceName}}Request) (*pb.Create{{$ServiceName}}Response, error) {
+	resp, err := s.service.Create{{$ServiceName}}(ctx, request.GetName())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err)
+	}
+
+	return &pb.Create{{$ServiceName}}Response{Id: int32(resp.ID)}, nil
+}
+
+func (s *Server) Get{{$ServiceName}}(ctx context.Context, request *pb.Get{{$ServiceName}}Request) (*pb.Get{{$ServiceName}}Response, error) {
+	resp, err := s.service.Get{{$ServiceName}}(ctx, int(request.GetId()))
+	if err != nil {
+		return nil, status.Error(codes.Internal, err)
+	}
+
+	return &pb.Get{{$ServiceName}}Response{
+	    Id:    int32(resp.ID),
+        Name:  resp.Name,
+	}, nil
+}
+
+func (s *Server) Update{{$ServiceName}}(ctx context.Context, request *pb.Update{{$ServiceName}}Request) (*pb.Update{{$ServiceName}}Response, error) {
+	resp, err := s.service.Update{{$ServiceName}}(ctx, int(request.GetId()), request.GetName())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err)
+	}
+
+	return &pb.Update{{$ServiceName}}Response{
+	    Id:    int32(resp.ID),
+        Name:  resp.Name,
+	}, nil
+}
+
+func (s *Server) Delete{{$ServiceName}}(ctx context.Context, request *pb.Delete{{$ServiceName}}Request) (*pb.Delete{{$ServiceName}}Response, error) {
+    err := s.service.Delete{{$ServiceName}}(ctx, int(request.GetId()))
+	if err != nil {
+		return nil, status.Error(codes.Internal, err)
+	}
+
+	return &pb.Delete{{$ServiceName}}Response{}, nil
+}
