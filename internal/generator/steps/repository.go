@@ -16,9 +16,11 @@ func NewRepository() *Repository {
 func (r *Repository) Invoke(genFS fs.FS, data *config.Config) error {
 	repoDir := fmt.Sprintf("%s/internal/repository/", genFS)
 
-	err := os.MkdirAll(repoDir+data.App.Storage, os.FileMode(0750))
-	if err != nil {
-		return err
+	for _, storage := range data.Storage {
+		err := os.MkdirAll(repoDir+storage, os.FileMode(0750))
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

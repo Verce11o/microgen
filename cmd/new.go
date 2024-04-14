@@ -41,7 +41,7 @@ var newCmd = &cobra.Command{
 		var moduleName string
 		var serviceName string
 		var additions []string
-		var storages []string
+		var storage string
 
 		form := huh.NewForm(
 			huh.NewGroup(
@@ -94,15 +94,14 @@ var newCmd = &cobra.Command{
 					Filterable(true),
 			),
 			huh.NewGroup(
-				huh.NewMultiSelect[string]().
+				huh.NewSelect[string]().
 					Title("Storage").
 					Description("📦 Choose your storage").
 					Options(
 						huh.NewOption("🐘 Postgres", "postgres"),
 						huh.NewOption("☘️  MongoDB", "mongo"),
 					).
-					Value(&storages).
-					Filterable(true),
+					Value(&storage),
 			),
 		)
 
@@ -120,10 +119,10 @@ var newCmd = &cobra.Command{
 		}
 
 		fmt.Fprintf(&sb,
-			"🚀 Module name: %s\n\n⚡ Additions: %s\n\n📦Storages: %s\n\nMade by Vercello with <3",
+			"🚀 Module name: %s\n\n⚡ Additions: %s\n\n📦Storage: %s\n\nMade by Vercello with <3",
 			lipgloss.NewStyle().Bold(true).Render(moduleName),
 			keyword(additions),
-			keyword(storages),
+			keyword([]string{storage}),
 		)
 
 		fmt.Println(
@@ -136,12 +135,7 @@ var newCmd = &cobra.Command{
 				Render(sb.String()),
 		)
 
-		confStorages := make([]config.Storage, 0, len(storages))
-		for _, storage := range storages {
-			confStorages = append(confStorages, config.Storage(storage))
-		}
-
-		config := config.NewConfig(config.App{Module: moduleName, Storages: confStorages}, serviceName)
+		config := config.NewConfig(config.App{Module: moduleName, Storage: storage}, serviceName)
 		microgen.InitApp(config)
 	},
 }

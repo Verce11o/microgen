@@ -1,15 +1,23 @@
 package config
 
 type Config struct {
-	App         App
-	ServiceName string
+	App          App
+	ServiceName  string
+	Storage      []string
+	StorageChunk []StorageChunk
 }
 
 type App struct {
-	Module  string
-	Storage string
+	Module string
 }
 
-func NewConfig(app App, serviceName string) *Config {
-	return &Config{App: app, ServiceName: serviceName}
+type StorageChunk struct {
+	Name                  string
+	ClientImports         []string
+	ImplementationImports []string
+	ClientTmpl            string
+}
+
+func NewConfig(module, serviceName string, storages []string) *Config {
+	return &Config{App: App{Module: module}, ServiceName: serviceName, Storage: storages}
 }

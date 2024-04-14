@@ -8,6 +8,7 @@ import (
 
 func InitApp(config *config.Config) error {
 	g := generator.NewGenerator(config, generator.NewSkeleton())
+	g.AddStep(steps.NewLoadChunks())
 	g.AddStep(steps.NewGoModInit())
 	g.AddStep(steps.NewCodeGen())
 	g.AddStep(steps.NewRenameTmpl())
