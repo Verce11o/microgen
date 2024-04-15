@@ -6,7 +6,7 @@ import (
 	"io/fs"
 )
 
-var chunks = map[string]config.StorageChunk{
+var chunks = map[string]config.Chunk{
 	"postgres": storage.NewPostgresChunk(),
 }
 

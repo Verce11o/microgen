@@ -33,8 +33,9 @@ import (
 func main() {
 	//cmd.Execute()
 	os.RemoveAll("example")
+	storages := []string{"postgres"}
 
-	config := config.NewConfig(config.App{Module: "github.com/Verce11o/example", Storage: "postgres"}, "example")
+	config := config.NewConfig("github.com/Verce11o/example", "example", storages)
 	err := microgen.InitApp(config)
 	if err != nil {
 		slog.Error(err.Error())
